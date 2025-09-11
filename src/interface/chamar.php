@@ -3,7 +3,7 @@ require_once __DIR__ . '/../service/tokenService.php';
 require_once __DIR__ . '/../database/connection.db.php';
 
 $conn = ConnectionDB::getConnection();
-$resultado = tokenService::AtualizarStatusToken($conn, "Em atendimento","Atendido");
+$resultado = tokenService::AtualizarStatusToken($conn ,"Em espera", "Em atendimento");
 
     if($resultado['sucesso']) {
         header('Location: painel-paciente.php');

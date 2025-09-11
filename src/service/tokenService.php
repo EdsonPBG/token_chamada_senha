@@ -37,7 +37,7 @@ class TokenService {
                 if ($token_a_atualizar) { //se for true
                         $numero_token = $token_a_atualizar['numero_token'];
                         $stmt_update = $conn->prepare("UPDATE tokens SET status = ? WHERE numero_token = ?");
-                        $stmt_update->execute([$status_novo,$numero_token]);
+                        $stmt_update->execute([$status_novo, $numero_token]);
 
                         $conn->commit();//QUando todas as operações são concluidas
                         return ["sucesso" => true, "token" => $numero_token];
