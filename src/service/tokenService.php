@@ -27,53 +27,27 @@ class TokenService {
         }
     }
 
-    public static function chamarProximo() { //Cria uma função publica para chamar a proxima senha
-        $conn = ConnectionDB::getConnection();
-
+    public static function AtualizarStatusToken($conn, $status_atual, $status_novo) { //Cria uma função com 3 parametros que chama o paciente e finaliza o atendimento
         try {
             $conn->beginTransaction();
-            $stmt_select = $conn->prepare("SELECT numero_token FROM tokens WHERE status = 'Em espera' ORDER BY data_criacao ASC LIMIT 1");
-            $stmt_select->execute();
-            $token_a_chamar = $stmt_select->fetch(PDO::FETCH_ASSOC);
+            $stmt_select = $conn->prepare("SELECT numero_token FROM tokens WHERE status = ? ORDER BY data_criacao ASC LIMIT 1");
+            $stmt_select->execute([$status_atual]);
+            $token_a_atualizar = $stmt_select->fetch(PDO::FETCH_ASSOC);
 
-                if ($token_a_chamar) { //se for true
-                        $numero_token = $token_a_chamar['numero_token'];
-                        $stmt_update = $conn->prepare("UPDATE tokens SET status = 'Em atendimento' WHERE numero_token = ?");
-                        $stmt_update->execute([$numero_token]);
+                if ($token_a_atualizar) { //se for true
+                        $numero_token = $token_a_atualizar['numero_token'];
+                        $stmt_update = $conn->prepare("UPDATE tokens SET status = ? WHERE numero_token = ?");
+                        $stmt_update->execute([$status_novo,$numero_token]);
 
                         $conn->commit();//QUando todas as operações são concluidas
-                        return ["sucesso" => true];
+                        return ["sucesso" => true, "token" => $numero_token];
                     } else { //se for false
-                        return ["sucesso" => false, "erro" => "Nenhum paciente na fila de espera."];
+                        $conn->rollBack();
+                        return ["sucesso" => false, "erro" => "Nenhum paciente encontrado."];
                     }
         } catch (PDOException $e) {
             $conn->rollBack();
-            return ["sucesso" => false, "erro" => "Erro ao chamar o paciente: " . $e->getMessage()];
-        }
-    }
-
-    public static function finalizarAtendimento() { ///Cria uma função de finalizar atendimento
-        $conn = ConnectionDB::getConnection();
-
-        try {
-            $conn->beginTransaction();
-            $stmt_select = $conn->prepare("SELECT numero_token FROM tokens WHERE status = 'Em atendimento' ORDER BY data_criacao ASC LIMIT 1");
-            $stmt_select->execute();
-            $token_a_finalizar = $stmt_select->fetch(PDO::FETCH_ASSOC);
-
-                if ($token_a_finalizar) {
-                        $numero_token = $token_a_finalizar['numero_token'];
-                        $stmt_update = $conn->prepare("UPDATE tokens SET status = 'Atendido' WHERE numero_token = ?");
-                        $stmt_update->execute([$numero_token]);
-
-                        $conn->commit();
-                        return ["sucesso" => true, "token" => $numero_token];
-                    } else {
-                        return ["sucesso" => false, "erro" => "Nenhum paciente em atendimento"];
-                    }
-        } catch (PDOException $e) {
-            $conn->callBack();
-            return ["sucesso" => false, "erro" => "Erro ao finalizar o atendimento: " . $e->getMessage()];
+            return ["sucesso" => false, "erro" => "Erro: " . $e->getMessage()];
         }
     }
 }
