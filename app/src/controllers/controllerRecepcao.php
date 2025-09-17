@@ -6,7 +6,7 @@ class ControllerRecepcao {
 
      public static function gerar($nome, $telefone, $email, $nascimento) {
         $conn = ConnectionDB::getConnection();
-        $resultado = TokenService::gerarSenha($nome, $telefone, $email, $nascimento);
+        $resultado = TokenService::gerarSenha($conn, $nome, $telefone, $email, $nascimento);
 
         if($resultado['sucesso']) {
             header('Location: index.php?page=recepcao&sucesso=' . urlencode("Senha do paciente gerada: {$resultado['nome']} - {$resultado['token']}"));
