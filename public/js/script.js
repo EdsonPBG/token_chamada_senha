@@ -1,17 +1,25 @@
 function painelPaciente () {
     fetch('index.php?page=painel-paciente-dados')
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+            if (!response.ok) {
+                // Lança um erro se a resposta HTTP não for bem-sucedida
+                throw new Error('Erro na rede ou servidor ' + response.statusText);
+            }
+            return response.json();
+        })
 
-            const tokenAtual = data.atendimento?.token || "Nenhum paciente em atendimento";
-            document.getElementById('token-atendimento').textContent = tokenAtual;
+        .then(data => {
+            const tokenAtual = data.atendimento?.numero_token || "Nenhum paciente em atendimento";
+            document.getElementById('atendimento-token').textContent = tokenAtual;
 
             const listaEspera = document.getElementById('lista-espera')
             listaEspera.innerHTML = "";
 
             data.espera.forEach(token => {
                 const li = document.createElement('li');
-                li.textContent = token.token;
+
+                li.textContent = token.numero_token + '  ' + token.nome_paciente;
+                
                 listaEspera.appendChild(li);
             });
         })

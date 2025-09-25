@@ -40,7 +40,7 @@ require_once __DIR__ . '/../app/src/classes/recepcao.conteudo.class.php';
         case 'recepcao':
             $pagina = new ConteudoRecepcao($mensagem);
             echo $pagina->renderHead();
-            echo $pagina->renderBody();
+            echo $pagina->renderBody(); 
         break;
 
         case 'painel-paciente':

@@ -7,8 +7,8 @@ class ControllerPainel {
     public static function getStatusPainel () {
         $conn = ConnectionDB::getConnection();
 
-        $token_atendimento = tokenService::AtualizarStatusToken($conn, "Em atendimento");
-        $token_espera = tokenService::AtualizarStatusToken($conn, "Em espera");
+        $token_espera = tokenService::buscarPorStatus($conn, "Em espera");
+        $token_atendimento = tokenService::buscarPorStatus($conn, "Em atendimento");
 
         header ('Content-type: application/json');
             echo json_encode([

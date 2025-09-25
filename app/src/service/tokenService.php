@@ -50,4 +50,24 @@ class TokenService {
             return ["sucesso" => false, "erro" => "Erro: " . $e->getMessage()];
         }
     }
+
+    public static function buscarPorStatus ($conn, $status) {
+        try {
+            $stmt = $conn->prepare("SELECT t.numero_token, t.status, p.nome_paciente 
+                                    FROM tokens AS t INNER JOIN pacientes AS p ON t.id_paciente = p.id_paciente 
+                                    WHERE t.status = :status ORDER BY t.numero_token ASC");
+                                    
+            $stmt->bindValue(':status', $status); // Associa o parâmetro de forma segura para evitar SQL Injection
+            $stmt->execute();
+
+            if($status === 'Em atendimento'){
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            } else {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+        } catch (PDOException $e) {
+            // Em caso de erro no banco de dados, retorna uma mensagem
+            return ['erro' => "Erro ao buscar tokens: " . $e->getMessage()];
+        }
+    }
 }

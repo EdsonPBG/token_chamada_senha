@@ -25,7 +25,7 @@ class ControllerRecepcao {
             header('Location: index.php?page=painel-paciente');
             exit();
         } else {
-            header('Location: index.php?page=recepcao&erro=' . urlencode($resultado['erro']));
+            header('Location: index.php?page=painel-paciente&erro=' . urlencode($resultado['erro']));
             exit();
         }
     }

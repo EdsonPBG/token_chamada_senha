@@ -1,0 +1,75 @@
+/* Estilos básicos para o corpo do painel */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: whitesmoke;
+    color: black;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+h1 {
+    color: #000000;
+    text-align: center;
+}
+
+/* --- Próximo a ser Atendido --- */
+
+/* Contêiner que envolve o token em atendimento */
+#atendimento-container {
+    background-color: whitesmoke; /* Fundo azul chamativo */
+    border-radius: 15px;
+    padding: 30px 50px;
+    margin-bottom: 40px;
+}
+
+/* Onde o token/nome do paciente aparece */
+#atendimento-token {
+    font-size: 5em; /* Fonte gigante */
+    font-weight: bold;
+    color: #0e0e0e; 
+    min-height: 100px; /* Garante que o bloco não encolha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Lista de Espera --- */
+
+h2 {
+    color: #060606; /* Cinza claro */
+    font-size: 1.8em;
+    padding-bottom: 5px;
+    margin-top: 0;
+}
+
+/* A lista não ordenada */
+#lista-espera {
+    list-style: none; /* Remove os marcadores de lista */
+    padding: 0;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Cada item da lista de espera */
+#lista-espera li {
+    background-color: #34495e; /* Fundo cinza-azulado */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 1.5em; /* Fonte grande para a lista */
+    font-weight: 500;
+    color: #ecf0f1;
+}
+
+/* Para destacar o primeiro da fila (opcional) */
+#lista-espera li:first-child {
+    background-color: #090909; /* Vermelho claro */
+    color: #ffffff;
+    font-weight: bold;
+}
