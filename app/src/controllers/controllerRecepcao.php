@@ -4,12 +4,12 @@ require_once __DIR__ . '/../database/connection.db.php';
 
 class ControllerRecepcao {
 
-     public static function gerar($nome, $telefone, $email, $nascimento) {
+     public static function gerar($nome, $telefone, $email, $nascimento) { 
         $conn = ConnectionDB::getConnection();
         $resultado = TokenService::gerarSenha($conn, $nome, $telefone, $email, $nascimento);
 
         if($resultado['sucesso']) {
-            header('Location: index.php?page=recepcao&sucesso=' . urlencode("Senha do paciente gerada: {$resultado['nome']} - {$resultado['token']}"));
+            header('Location: index.php?page=recepcao&sucesso=' . urlencode("Senha: {$resultado['token']} Nome: {$resultado['nome']}"));
             exit();
         } else {
             header('Location: index.php?page=recepcao&erro=' . urlencode($resultado['erro']));
@@ -22,10 +22,10 @@ class ControllerRecepcao {
         $resultado = tokenService::AtualizarStatusToken($conn ,"Em espera", "Em atendimento");
 
         if($resultado['sucesso']) {
-            header('Location: index.php?page=painel-paciente');
+            header('Location: index.php?page=recepcao');
             exit();
         } else {
-            header('Location: index.php?page=painel-paciente&erro=' . urlencode($resultado['erro']));
+            header('Location: index.php?page=recepcao&erro=' . urlencode($resultado['erro']));
             exit();
         }
     }
@@ -35,7 +35,7 @@ class ControllerRecepcao {
         $resultado = tokenService::AtualizarStatusToken($conn, "Em atendimento", "Atendido");
 
         if($resultado['sucesso']) {
-            header('Location: index.php?page=recepcao&sucesso=' . urlencode("Atendimento ao paciente: {$resultado['nome']} - {$resultado['token']} finalizado"));
+            header('Location: index.php?page=recepcao&sucesso=' . urlencode("Atendimento a Senha: {$resultado['token']} finalizado"));
             exit();
         } else {
             header('Location: index.php?page=recepcao&erro=' . urlencode($resultado['erro']));

@@ -1,13 +1,15 @@
 <?php
 
 class ConteudoRecepcao {
+
     private $mensagem;
 
-    public function __construct($mensagem = '') {
+    public function __construct($mensagem = '') { // RECEBE A MENSAGEM PARA UTILIZAR NO ALERTA
         $this->mensagem = $mensagem;
     }
 
     public function renderHead () {
+
     $html = <<<HTML
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -24,13 +26,18 @@ HTML;
 
     public function renderBody () {
     $html = <<<HTML
+    
 <script> 
-    function exibirMensagem() {
+    function exibirMensagem() { // exibe a mensagem de alerta apos gerar senha e finalizar
+
     const mensagem = "{$this->mensagem}";
+
     if(mensagem !== "") {
         alert(mensagem);
     }
-    }
+}
+
+    exibirMensagem();
 </script>
 
 <div class="form-container"> 
